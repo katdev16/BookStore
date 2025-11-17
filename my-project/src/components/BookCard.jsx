@@ -17,18 +17,25 @@ const initial = (() => {
 export { initial };
 
 
-const BookCard = ({ books, readStatuses, markAsRead }) => {
+const BookCard = ({ books, readStatuses, markAsRead, onBookClick }) => {
   return (
     <>
       {books.map((book) => (
-        <div key={book._id} className="flex flex-col justify-center p-4 rounded-lg shadow-md w-80 h-96 bg-grey text-black hover:scale-105 transition-transform duration-200" >
+        <div
+          key={book._id}
+          className="flex flex-col justify-center p-4 rounded-lg shadow-md w-80 h-96 bg-grey text-black hover:scale-105 transition-transform duration-200 cursor-pointer"
+          onClick={() => onBookClick(book._id)}
+        >
           <div className="mb-4">
             <img src={book.thumbnailUrl} alt={book.title} className="w-full h-48 object-cover mb-2" />
             <h2 className="text-lg font-semibold">{book.title}</h2>
             <p className="text-gray-600">Category: {book.categories}</p>
           </div>
           <button
-            onClick={() => markAsRead(book._id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              markAsRead(book._id);
+            }}
             className={`h-20 flex items-center justify-center text-white ${readStatuses[book._id] === 'Read' ? 'bg-green-700' : 'bg-red-800'}`}
           >
             <p>{readStatuses[book._id] || 'Unread'}</p>

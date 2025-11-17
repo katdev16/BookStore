@@ -1,9 +1,12 @@
 import React from 'react';
 import BookCard from '../components/bookcard.jsx';
+import AddBook from './AddBook.jsx';
 import the_amazon_book_list from '../assets/the_amazon_book_list.json';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Home = () => {
+  const navigate = useNavigate();
   // Book statuses: { [bookId]: 'Read' | 'Unread' }
   const [readStatuses, setReadStatuses] = React.useState(() => {
     const obj = {};
@@ -28,10 +31,22 @@ export const Home = () => {
     if (filterMode === 'All') return true;
     return readStatuses[book._id] === filterMode;
   });
+
+  // Handler to navigate to book detail page with bookId
+  const handleBookClick = (bookId) => {
+    navigate(`/book/${bookId}`);
+  };
     
   return (
-    <>
-      <button className="bg-black text-white text-2xl w-full h-40">Add book</button>
+      <>
+      
+      
+      <button
+        className="bg-black text-white text-2xl w-full h-40"
+        onClick={() => navigate('/add-book')}
+      >
+        Add book
+      </button>
       
       <div className="p-2 flex flex-wrap justify-end items-center gap-40">
         <div className='search'>
@@ -54,8 +69,10 @@ export const Home = () => {
           books={filteredBooks}
           readStatuses={readStatuses}
           markAsRead={markAsRead}
+          onBookClick={handleBookClick}
         />
       </div>
+      
 
     </>
   )
