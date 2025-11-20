@@ -2,11 +2,19 @@ import React from 'react';
 import BookCard from '../components/bookcard.jsx';
 import AddBook from './AddBook.jsx';
 import the_amazon_book_list from '../assets/the_amazon_book_list.json';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { useState } from 'react';
 
 
 export const Home = () => {
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredItems = the_amazon_book_list.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Book statuses: { [bookId]: 'Read' | 'Unread' }
   const [readStatuses, setReadStatuses] = React.useState(() => {
     const obj = {};
@@ -26,10 +34,16 @@ export const Home = () => {
     }));
   };
 
-  // Filter books based on filterMode and readStatuses
+  // Filter books based on filterMode, readStatuses, and search term
   const filteredBooks = the_amazon_book_list.filter((book) => {
-    if (filterMode === 'All') return true;
-    return readStatuses[book._id] === filterMode;
+    // Apply search filter
+    const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Apply read/unread filter
+    if (filterMode === 'All') {
+      return matchesSearch;
+    }
+    return matchesSearch && readStatuses[book._id] === filterMode;
   });
 
   // Handler to navigate to book detail page with bookId
@@ -48,9 +62,14 @@ export const Home = () => {
         Add book
       </button>
       
-      <div className="p-2 flex flex-wrap justify-end items-center gap-40">
+      <div className=" w-300 p-2 flex flex-wrap justify-end items-center gap-40">
         <div className='search'>
-            <input type="text" placeholder="Search books..." className="border border-black p-2 rounded-l-lg" />
+            <input type="text" 
+            placeholder="Search books..." 
+            className="border border-black p-2 rounded-l-lg"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            />
             <button className="border border-black bg-black text-white p-2 rounded-r-lg">Search</button>
         </div>
         <select
