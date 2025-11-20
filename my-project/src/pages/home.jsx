@@ -56,7 +56,7 @@ export const Home = () => {
       
       
       <button
-        className="bg-black text-white text-2xl w-full h-40"
+        className="bg-black text-white text-2xl font-bold w-full h-40"
         onClick={() => navigate('/add-book')}
       >
         Add book

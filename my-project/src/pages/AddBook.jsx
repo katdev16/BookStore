@@ -52,7 +52,7 @@ function AddBook() {
     </div>
     <div className="flex justify-center items-center h-full">
     <div className="border border-black bg-black p-20 h-220 rounded-xl w-150 text-white flex flex-justify-center items-center flex-col">
-      <h1>Add Book</h1>
+      <h1 className="text-2xl font-bold">Add Book</h1>
       <form onSubmit={handleSubmit} className="p-20 flex flex-col gap-4">
         {/* Input for Title */}
         Title:
